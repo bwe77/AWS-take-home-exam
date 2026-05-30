@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshBasket</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="logo" onclick="showPage('home')">🌱 FreshBasket</a>
+    <div class="nav-links" id="nav-links">
+      <a href="#" onclick="showPage('browse')">Browse</a>
+      <span id="nav-auth-guest">
+        <a href="#" onclick="showPage('login')">Sign in</a>
+        <a href="#" class="btn btn-sm" onclick="showPage('register')">Get started</a>
+      </span>
+      <span id="nav-auth-user" class="hidden">
+        <a href="#" id="nav-orders-link" onclick="showPage('orders')">Orders</a>
+        <a href="#" id="nav-dashboard-link" class="hidden" onclick="showPage('dashboard')">Dashboard</a>
+        <a href="#" id="nav-user-name"></a>
+        <a href="#" onclick="logout()" class="signout">Sign out</a>
+      </span>
+    </div>
+  </nav>   
+    <div id="page-browse" class="page hidden">
+        <div class="container page-inner">
+        <div class="browse-header">
+            <h1>This week's harvest</h1>
+            <div class="filter-row">
+            <button class="pill active" onclick="filterCat('all', this)">All</button>
+            <button class="pill" onclick="filterCat('vegetables', this)">Vegetables</button>
+            <button class="pill" onclick="filterCat('fruits', this)">Fruits</button>
+            <button class="pill" onclick="filterCat('herbs', this)">Herbs</button>
+            <button class="pill" onclick="filterCat('eggs', this)">Eggs</button>
+            </div>
+        </div>
+        <div class="listings-grid" id="listings-grid">
+            <div class="loading">Loading…</div>
+        </div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

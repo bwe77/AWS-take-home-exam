@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshBasket</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="logo" onclick="showPage('home')">🌱 FreshBasket</a>
+    <div class="nav-links" id="nav-links">
+      <a href="#" onclick="showPage('browse')">Browse</a>
+      <span id="nav-auth-guest">
+        <a href="#" onclick="showPage('login')">Sign in</a>
+        <a href="#" class="btn btn-sm" onclick="showPage('register')">Get started</a>
+      </span>
+      <span id="nav-auth-user" class="hidden">
+        <a href="#" id="nav-orders-link" onclick="showPage('orders')">Orders</a>
+        <a href="#" id="nav-dashboard-link" class="hidden" onclick="showPage('dashboard')">Dashboard</a>
+        <a href="#" id="nav-user-name"></a>
+        <a href="#" onclick="logout()" class="signout">Sign out</a>
+      </span>
+    </div>
+  </nav>
+
+  <!-- home -->
+  <div id="page-home" class="page">
+    <section class="hero">
+      <div class="hero-text">
+        <div class="hero-tag">🌱 Sydney &amp; surrounds</div>
+        <h1>Farm-fresh food,<br><em>direct to your door</em></h1>
+        <p>FreshBasket connects local growers with home cooks. No middlemen.</p>
+        <div class="hero-btns">
+          <button class="btn btn-primary" onclick="showPage('browse')">Shop the harvest</button>
+          <button class="btn btn-outline" onclick="showPage('register')">Sell your produce</button>
+        </div>
+      </div>
+      <div class="hero-cards">
+        <div class="float-card">🍅 <strong>Heirloom Tomatoes</strong><br><small>Sunrise Farm · $6.50/kg</small></div>
+        <div class="float-card">🥬 <strong>Baby Spinach</strong><br><small>Green Valley · $4.00/bunch</small></div>
+        <div class="float-card">🫐 <strong>Wild Blueberries</strong><br><small>Green Valley · $9.00/punnet</small></div>
+      </div>
+    </section>
+
+    <section class="how-section">
+      <div class="container">
+        <h2 class="section-title">How it works</h2>
+        <div class="how-grid">
+          <div class="how-card"><div class="how-icon">🔍</div><h3>Browse</h3><p>Find fresh produce from local growers near you.</p></div>
+          <div class="how-card"><div class="how-icon">🛒</div><h3>Order</h3><p>Place your order directly with the grower.</p></div>
+          <div class="how-card"><div class="how-icon">🚲</div><h3>Receive</h3><p>Get your produce delivered within 48 hours of harvest.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Are you a local grower?</h2>
+          <p>List your produce in minutes. Set your own prices.</p>
+          <button class="btn btn-white" onclick="showPage('register')">Start selling free →</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

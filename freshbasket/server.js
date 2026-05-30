@@ -13,9 +13,9 @@ app.use('/api', require('./routes/api'));
 // Serve static frontend (the public/ folder)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// SPA fallback — all non-API routes return index.html
+// SPA fallback — all non-API routes return landing.html
 app.get('/{*path}', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
 });
 
 const PORT = process.env.PORT || 5000;

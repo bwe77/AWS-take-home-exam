@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshBasket</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="logo" onclick="showPage('home')">🌱 FreshBasket</a>
+    <div class="nav-links" id="nav-links">
+      <a href="#" onclick="showPage('browse')">Browse</a>
+      <span id="nav-auth-guest">
+        <a href="#" onclick="showPage('login')">Sign in</a>
+        <a href="#" class="btn btn-sm" onclick="showPage('register')">Get started</a>
+      </span>
+      <span id="nav-auth-user" class="hidden">
+        <a href="#" id="nav-orders-link" onclick="showPage('orders')">Orders</a>
+        <a href="#" id="nav-dashboard-link" class="hidden" onclick="showPage('dashboard')">Dashboard</a>
+        <a href="#" id="nav-user-name"></a>
+        <a href="#" onclick="logout()" class="signout">Sign out</a>
+      </span>
+    </div>
+  </nav>
+
+  <!-- dashboard -->
+  <div id="page-dashboard" class="page hidden">
+    <div class="container page-inner">
+      <div class="dash-header">
+        <h1 id="dash-greeting">Dashboard</h1>
+        <button class="btn btn-primary" onclick="toggleNewListingForm()">+ New listing</button>
+      </div>
+
+      <!-- New listing form -->
+      <div id="new-listing-form" class="card form-card hidden">
+        <h3>New listing</h3>
+        <div id="listing-error" class="error-msg hidden"></div>
+        <div class="form-row">
+          <div class="field"><label>Emoji</label>
+            <select id="nl-emoji">
+              <option>🍅</option><option>🥕</option><option>🥬</option><option>🥦</option>
+              <option>🌿</option><option>🍋</option><option>🫐</option><option>🍓</option>
+              <option>🥚</option><option>🧄</option><option>🥒</option><option>🌱</option>
+            </select>
+          </div>
+          <div class="field" style="flex:2"><label>Title</label><input type="text" id="nl-title" placeholder="e.g. Heirloom Tomatoes"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>Category</label>
+            <select id="nl-category">
+              <option value="vegetables">Vegetables</option>
+              <option value="fruits">Fruits</option>
+              <option value="herbs">Herbs</option>
+              <option value="eggs">Eggs</option>
+            </select>
+          </div>
+          <div class="field"><label>Price ($)</label><input type="number" id="nl-price" placeholder="0.00" step="0.01"></div>
+          <div class="field"><label>Unit</label>
+            <select id="nl-unit">
+              <option>kg</option><option>bunch</option><option>punnet</option>
+              <option>head</option><option>bag</option><option>dozen</option><option>bundle</option>
+            </select>
+          </div>
+          <div class="field"><label>Stock</label><input type="number" id="nl-stock" placeholder="0"></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-outline" onclick="toggleNewListingForm()">Cancel</button>
+          <button class="btn btn-primary" onclick="createListing()">Create listing</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" id="tab-listings" onclick="switchTab('listings')">My listings</button>
+        <button class="tab" id="tab-orders" onclick="switchTab('orders')">Incoming orders</button>
+      </div>
+
+      <div id="dash-listings"><div class="loading">Loading…</div></div>
+      <div id="dash-orders" class="hidden"><div class="loading">Loading…</div></div>
+    </div>
+  </div>
+
+   <!-- Toast -->
+   <div id="toast" class="toast hidden"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
