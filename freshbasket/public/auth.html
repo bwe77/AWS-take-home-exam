@@ -3,67 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreshBasket</title>
+  <title>FreshBasket — Sign in</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
-  <!-- NAV -->
   <nav id="navbar">
-    <a href="#" class="logo" onclick="showPage('home')">🌱 FreshBasket</a>
-    <div class="nav-links" id="nav-links">
-      <a href="#" onclick="showPage('browse')">Browse</a>
+    <a href="javascript:void(0)" class="logo" onclick="showPage('home')">🌱 FreshBasket</a>
+    <div class="nav-links">
+      <a href="javascript:void(0)" onclick="showPage('browse')">Browse</a>
       <span id="nav-auth-guest">
-        <a href="#" onclick="showPage('login')">Sign in</a>
-        <a href="#" class="btn btn-sm" onclick="showPage('register')">Get started</a>
+        <a href="javascript:void(0)" onclick="showPage('login')">Sign in</a>
+        <a href="javascript:void(0)" class="btn btn-sm" onclick="showPage('register')">Get started</a>
       </span>
       <span id="nav-auth-user" class="hidden">
-        <a href="#" id="nav-orders-link" onclick="showPage('orders')">Orders</a>
-        <a href="#" id="nav-dashboard-link" class="hidden" onclick="showPage('dashboard')">Dashboard</a>
-        <a href="#" id="nav-user-name"></a>
-        <a href="#" onclick="logout()" class="signout">Sign out</a>
+        <a href="javascript:void(0)" onclick="showPage('orders')">Orders</a>
+        <a href="javascript:void(0)" id="nav-dashboard-link" class="hidden" onclick="showPage('dashboard')">Dashboard</a>
+        <a href="javascript:void(0)" id="nav-user-name"></a>
+        <a href="javascript:void(0)" onclick="logout()" class="signout">Sign out</a>
       </span>
     </div>
   </nav>
 
-<!-- login -->
-    <div id="page-login" class="page hidden">
-        <div class="auth-wrap">
-        <div class="auth-card">
-            <div class="auth-logo">🌱 FreshBasket</div>
-            <h2>Welcome back</h2>
-            <p class="auth-sub">Sign in to your account</p>
-            <div id="login-error" class="error-msg hidden"></div>
-            <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com"></div>
-            <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
-            <button class="btn btn-primary full" onclick="doLogin()">Sign in</button>
-            <p class="demo-note">Demo: <code>sarah@example.com</code> or <code>marcus@sunrisefarm.com</code><br>Password: <code>password123</code></p>
-            <p class="switch-link">No account? <a href="#" onclick="showPage('register')">Sign up</a></p>
-        </div>
-        </div>
+  <!-- LOGIN -->
+  <div id="page-login" class="hidden">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-logo">🌱 FreshBasket</div>
+        <h2>Welcome back</h2>
+        <p class="auth-sub">Sign in to your account</p>
+        <div id="login-error" class="error-msg hidden"></div>
+        <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com"></div>
+        <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
+        <button class="btn btn-primary full" onclick="doLogin()">Sign in</button>
+        <p class="demo-note">Demo: <code>sarah@example.com</code> or <code>marcus@sunrisefarm.com</code><br>Password: <code>password123</code></p>
+        <p class="switch-link">No account? <a href="javascript:void(0)" onclick="showPage('register')">Sign up</a></p>
+      </div>
     </div>
+  </div>
 
-    <!-- register -->
-    <div id="page-register" class="page hidden">
-        <div class="auth-wrap">
-        <div class="auth-card">
-            <div class="auth-logo">🌱 FreshBasket</div>
-            <h2>Create your account</h2>
-            <div class="role-toggle">
-            <button class="role-btn active" id="role-btn-buyer" onclick="setRole('buyer')">🧑‍🍳 Home cook</button>
-            <button class="role-btn" id="role-btn-grower" onclick="setRole('grower')">🌱 Grower</button>
-            </div>
-            <input type="hidden" id="reg-role" value="buyer">
-            <div id="register-error" class="error-msg hidden"></div>
-            <div class="field"><label>Full name</label><input type="text" id="reg-name" placeholder="Your name"></div>
-            <div class="field"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com"></div>
-            <div class="field"><label>Password</label><input type="password" id="reg-password" placeholder="Min 6 characters"></div>
-            <button class="btn btn-primary full" onclick="doRegister()">Get started</button>
-            <p class="switch-link">Have an account? <a href="#" onclick="showPage('login')">Sign in</a></p>
+  <!-- REGISTER -->
+  <div id="page-register" class="hidden">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-logo">🌱 FreshBasket</div>
+        <h2>Create your account</h2>
+        <div class="role-toggle">
+          <button class="role-btn active" id="role-btn-buyer" onclick="setRole('buyer')">🧑‍🍳 Home cook</button>
+          <button class="role-btn" id="role-btn-grower" onclick="setRole('grower')">🌱 Grower</button>
         </div>
-        </div>
+        <input type="hidden" id="reg-role" value="buyer">
+        <div id="register-error" class="error-msg hidden"></div>
+        <div class="field"><label>Full name</label><input type="text" id="reg-name" placeholder="Your name"></div>
+        <div class="field"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com"></div>
+        <div class="field"><label>Password</label><input type="password" id="reg-password" placeholder="Min 6 characters"></div>
+        <button class="btn btn-primary full" onclick="doRegister()">Get started</button>
+        <p class="switch-link">Have an account? <a href="javascript:void(0)" onclick="showPage('login')">Sign in</a></p>
+      </div>
     </div>
+  </div>
 
+  <div id="toast" class="toast hidden"></div>
   <script src="/app.js"></script>
+  <script>updateNav(); initAuthPage();</script>
 </body>
 </html>

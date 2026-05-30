@@ -3,7 +3,7 @@ let token = localStorage.getItem('fb_token') || null;
 let user  = JSON.parse(localStorage.getItem('fb_user') || 'null');
 let currentCat = 'all';
 
-// ── API helper ───────────────────────────────────────────────────────────
+// ── API helper ────────────────────────────────────────────────────────────
 async function api(method, path, body) {
   const opts = {
     method,
@@ -16,29 +16,32 @@ async function api(method, path, body) {
   return data;
 }
 
-// ── Toast ────────────────────────────────────────────────────────────────
+// ── Toast ─────────────────────────────────────────────────────────────────
 function toast(msg, type = '') {
   const el = document.getElementById('toast');
+  if (!el) return;
   el.textContent = msg;
   el.className = 'toast' + (type ? ' ' + type : '');
   el.classList.remove('hidden');
   setTimeout(() => el.classList.add('hidden'), 3000);
 }
 
-// ── Page router ──────────────────────────────────────────────────────────
+// ── Navigation — goes to actual HTML files ────────────────────────────────
 function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-  const page = document.getElementById('page-' + name);
-  if (page) page.classList.remove('hidden');
-  window.scrollTo(0, 0);
-
-  if (name === 'browse')    loadListings();
-  if (name === 'orders')    loadOrders();
-  if (name === 'dashboard') loadDashboard();
+  const pages = {
+    'home':      '/landing.html',
+    'browse':    '/browse.html',
+    'login':     '/auth.html?page=login',
+    'register':  '/auth.html?page=register',
+    'orders':    '/order.html',
+    'dashboard': '/farmerView.html',
+  };
+  if (pages[name]) window.location.href = pages[name];
 }
 
+// ── Nav — call this on every page ─────────────────────────────────────────
 function updateNav() {
-  const guest = document.getElementById('nav-auth-guest');
+  const guest    = document.getElementById('nav-auth-guest');
   const loggedIn = document.getElementById('nav-auth-user');
   const dashLink = document.getElementById('nav-dashboard-link');
   const userName = document.getElementById('nav-user-name');
@@ -46,15 +49,15 @@ function updateNav() {
   if (user) {
     guest.classList.add('hidden');
     loggedIn.classList.remove('hidden');
-    userName.textContent = user.name.split(' ')[0];
-    dashLink.classList.toggle('hidden', user.role !== 'grower');
+    if (userName) userName.textContent = user.name.split(' ')[0];
+    if (dashLink) dashLink.classList.toggle('hidden', user.role !== 'grower');
   } else {
     guest.classList.remove('hidden');
     loggedIn.classList.add('hidden');
   }
 }
 
-// ── Auth ─────────────────────────────────────────────────────────────────
+// ── Auth ──────────────────────────────────────────────────────────────────
 async function doLogin() {
   const email    = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
@@ -62,14 +65,14 @@ async function doLogin() {
   errEl.classList.add('hidden');
   try {
     const data = await api('POST', '/login', { email, password });
-    token = data.token; user = data.user;
+    token = data.token;
+    user  = data.user;
     localStorage.setItem('fb_token', token);
     localStorage.setItem('fb_user', JSON.stringify(user));
-    updateNav();
-    toast('Welcome back, ' + user.name.split(' ')[0] + '!', 'success');
     showPage(user.role === 'grower' ? 'dashboard' : 'browse');
   } catch (e) {
-    errEl.textContent = e.message; errEl.classList.remove('hidden');
+    errEl.textContent = e.message;
+    errEl.classList.remove('hidden');
   }
 }
 
@@ -82,24 +85,23 @@ async function doRegister() {
   errEl.classList.add('hidden');
   try {
     const data = await api('POST', '/register', { name, email, password, role });
-    token = data.token; user = data.user;
+    token = data.token;
+    user  = data.user;
     localStorage.setItem('fb_token', token);
     localStorage.setItem('fb_user', JSON.stringify(user));
-    updateNav();
-    toast('Account created!', 'success');
     showPage(user.role === 'grower' ? 'dashboard' : 'browse');
   } catch (e) {
-    errEl.textContent = e.message; errEl.classList.remove('hidden');
+    errEl.textContent = e.message;
+    errEl.classList.remove('hidden');
   }
 }
 
 function logout() {
-  token = null; user = null;
+  token = null;
+  user  = null;
   localStorage.removeItem('fb_token');
   localStorage.removeItem('fb_user');
-  updateNav();
-  showPage('home');
-  toast('Signed out.');
+  window.location.href = '/landing.html';
 }
 
 function setRole(role) {
@@ -108,10 +110,19 @@ function setRole(role) {
   document.getElementById('role-btn-' + role).classList.add('active');
 }
 
+// ── auth.html — show login or register tab based on ?page= ───────────────
+function initAuthPage() {
+  const params = new URLSearchParams(window.location.search);
+  const page   = params.get('page') || 'login';
+  document.getElementById('page-login').classList.toggle('hidden', page !== 'login');
+  document.getElementById('page-register').classList.toggle('hidden', page !== 'register');
+}
+
 // ── Browse ────────────────────────────────────────────────────────────────
 async function loadListings(cat) {
   if (cat) currentCat = cat;
   const grid = document.getElementById('listings-grid');
+  if (!grid) return;
   grid.innerHTML = '<div class="loading">Loading…</div>';
   try {
     const url = currentCat === 'all' ? '/listings' : '/listings?category=' + currentCat;
@@ -129,7 +140,7 @@ async function loadListings(cat) {
           <div class="listing-footer">
             <div class="listing-price">$${l.price.toFixed(2)} <span>/ ${l.unit}</span></div>
             ${user && user.role === 'buyer'
-              ? `<button class="order-btn" onclick="placeOrder(${l.id}, '${l.title}', ${l.price})" title="Add to order">+</button>`
+              ? `<button class="order-btn" onclick="placeOrder(${l.id}, '${l.title}')">+</button>`
               : ''}
           </div>
         </div>
@@ -146,7 +157,7 @@ function filterCat(cat, btn) {
   loadListings(cat);
 }
 
-async function placeOrder(listingId, title, price) {
+async function placeOrder(listingId, title) {
   if (!user) { showPage('login'); return; }
   try {
     await api('POST', '/orders', { listing_id: listingId, quantity: 1 });
@@ -157,9 +168,10 @@ async function placeOrder(listingId, title, price) {
   }
 }
 
-// ── Orders (buyer) ────────────────────────────────────────────────────────
+// ── Orders ────────────────────────────────────────────────────────────────
 async function loadOrders() {
   const el = document.getElementById('orders-list');
+  if (!el) return;
   el.innerHTML = '<div class="loading">Loading…</div>';
   try {
     const orders = await api('GET', '/orders');
@@ -183,16 +195,18 @@ async function loadOrders() {
   }
 }
 
-// ── Dashboard (grower) ────────────────────────────────────────────────────
+// ── Dashboard ─────────────────────────────────────────────────────────────
 function loadDashboard() {
-  if (!user) return;
-  document.getElementById('dash-greeting').textContent = 'Welcome, ' + user.name.split(' ')[0] + ' 🌱';
+  if (!user) { showPage('login'); return; }
+  const greeting = document.getElementById('dash-greeting');
+  if (greeting) greeting.textContent = 'Welcome, ' + user.name.split(' ')[0] + ' 🌱';
   loadDashListings();
   loadDashOrders();
 }
 
 async function loadDashListings() {
   const el = document.getElementById('dash-listings');
+  if (!el) return;
   try {
     const listings = await api('GET', '/listings');
     const mine = listings.filter(l => l.grower_id === user.id);
@@ -205,7 +219,7 @@ async function loadDashListings() {
         <div class="dl-emoji">${l.emoji}</div>
         <div class="dl-info">
           <div class="dl-name">${l.title}</div>
-          <div class="dl-meta">$${l.price.toFixed(2)} / ${l.unit} &nbsp;·&nbsp; ${l.stock} in stock</div>
+          <div class="dl-meta">$${l.price.toFixed(2)} / ${l.unit} · ${l.stock} in stock</div>
         </div>
         <div class="dl-actions">
           <button class="btn btn-danger btn-sm" onclick="deleteListing(${l.id})">Delete</button>
@@ -219,10 +233,11 @@ async function loadDashListings() {
 
 async function loadDashOrders() {
   const el = document.getElementById('dash-orders');
+  if (!el) return;
   try {
     const orders = await api('GET', '/orders');
     if (!orders.length) {
-      el.innerHTML = '<div class="empty"><span class="e-icon">📦</span><h3>No orders yet</h3><p>Orders will appear here when customers purchase your listings.</p></div>';
+      el.innerHTML = '<div class="empty"><span class="e-icon">📦</span><h3>No orders yet</h3></div>';
       return;
     }
     el.innerHTML = orders.map(o => `
@@ -252,7 +267,6 @@ async function deleteListing(id) {
     await api('DELETE', '/listings/' + id);
     toast('Listing deleted.', 'success');
     loadDashListings();
-    loadListings();
   } catch (e) {
     toast(e.message, 'error');
   }
@@ -275,7 +289,8 @@ async function createListing() {
     toggleNewListingForm();
     loadDashListings();
   } catch (e) {
-    errEl.textContent = e.message; errEl.classList.remove('hidden');
+    errEl.textContent = e.message;
+    errEl.classList.remove('hidden');
   }
 }
 
@@ -289,8 +304,7 @@ async function updateOrderStatus(orderId, status) {
 }
 
 function toggleNewListingForm() {
-  const form = document.getElementById('new-listing-form');
-  form.classList.toggle('hidden');
+  document.getElementById('new-listing-form').classList.toggle('hidden');
 }
 
 function switchTab(tab) {
@@ -299,7 +313,3 @@ function switchTab(tab) {
   document.getElementById('dash-listings').classList.toggle('hidden', tab !== 'listings');
   document.getElementById('dash-orders').classList.toggle('hidden', tab !== 'orders');
 }
-
-// ── Init ─────────────────────────────────────────────────────────────────
-updateNav();
-showPage('home');

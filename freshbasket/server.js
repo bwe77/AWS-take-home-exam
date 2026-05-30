@@ -10,13 +10,18 @@ app.use(express.json());
 // API routes
 app.use('/api', require('./routes/api'));
 
-// Serve static frontend (the public/ folder)
+// Static files (html, css, js)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// SPA fallback — all non-API routes return landing.html
+// Root → landing page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
+});
+
+// Catch-all fallback
 app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'landing.html'));
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`FreshBasket running on port ${PORT}`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`FreshBasket running on http://localhost:${PORT}`));

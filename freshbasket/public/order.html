@@ -3,37 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreshBasket</title>
+  <title>FreshBasket — My Orders</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
-  <!-- NAV -->
   <nav id="navbar">
-    <a href="#" class="logo" onclick="showPage('home')">🌱 FreshBasket</a>
-    <div class="nav-links" id="nav-links">
-      <a href="#" onclick="showPage('browse')">Browse</a>
+    <a href="javascript:void(0)" class="logo" onclick="showPage('home')">🌱 FreshBasket</a>
+    <div class="nav-links">
+      <a href="javascript:void(0)" onclick="showPage('browse')">Browse</a>
       <span id="nav-auth-guest">
-        <a href="#" onclick="showPage('login')">Sign in</a>
-        <a href="#" class="btn btn-sm" onclick="showPage('register')">Get started</a>
+        <a href="javascript:void(0)" onclick="showPage('login')">Sign in</a>
+        <a href="javascript:void(0)" class="btn btn-sm" onclick="showPage('register')">Get started</a>
       </span>
       <span id="nav-auth-user" class="hidden">
-        <a href="#" id="nav-orders-link" onclick="showPage('orders')">Orders</a>
-        <a href="#" id="nav-dashboard-link" class="hidden" onclick="showPage('dashboard')">Dashboard</a>
-        <a href="#" id="nav-user-name"></a>
-        <a href="#" onclick="logout()" class="signout">Sign out</a>
+        <a href="javascript:void(0)" onclick="showPage('orders')">Orders</a>
+        <a href="javascript:void(0)" id="nav-dashboard-link" class="hidden" onclick="showPage('dashboard')">Dashboard</a>
+        <a href="javascript:void(0)" id="nav-user-name"></a>
+        <a href="javascript:void(0)" onclick="logout()" class="signout">Sign out</a>
       </span>
     </div>
   </nav>
 
-<!-- order list -->
-  <div id="page-orders" class="page hidden">
-    <div class="container page-inner">
-      <h1>My orders</h1>
-      <div id="orders-list"><div class="loading">Loading…</div></div>
-    </div>
+  <div class="container page-inner">
+    <h1>My orders</h1>
+    <div id="orders-list"><div class="loading">Loading…</div></div>
   </div>
 
-    <script src="/app.js"></script>
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+  <script>updateNav(); loadOrders();</script>
 </body>
 </html>
